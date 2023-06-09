@@ -47,4 +47,5 @@
   }
   spl_autoload_register('my_autoload');
   $database = db_connect();
+  bicycle::set_database($database);
 ?>

@@ -4,6 +4,7 @@
 <?php $page_title = 'Inventory'; ?>
 <?php include(SHARED_PATH . '/public_header.php'); ?>
 
+
 <div id="main">
 
   <div id="page">
@@ -28,14 +29,13 @@
       </tr>
 
       <?php
-      $parser = new ParseCSV(PRIVATE_PATH . '/used_bicycles.csv');
-      $bike_array = $parser->parse();
-      ?>
 
-      <?php foreach ($bike_array as $args) {
-        $bike = new Bicycle($args);
-        $test = new Test_for_autoloading();
+      $bikes = bicycle::find_all();
+
       ?>
+      <?php
+
+      foreach ($bikes  as $bike) { ?>
 
         <tr>
           <td><?php echo h($bike->brand); ?></td>
@@ -50,9 +50,10 @@
         </tr>
 
       <?php } ?>
-
-
     </table>
   </div>
 
 </div>
+<?php
+include(SHARED_PATH . '/public_footer.php');
+?>
