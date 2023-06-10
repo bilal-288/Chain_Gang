@@ -36,7 +36,7 @@ class bicycle
     static public function find_by_id($id)
     {
         $sql= "select * from bicycles";
-        $sql .= "where id='" . self::$database->escape_string($id) . "'";
+        $sql .= " where id='" . self::$database->escape_string($id) . "'";
         $obj_array = self::find_by_sql($sql);
         if(!empty($obj_array))
         {
@@ -170,5 +170,10 @@ class bicycle
     {
         $formatted = '$' . $this->price;
         return $formatted;
+    }
+
+    public function name()
+    {
+        return "{$this->brand} {$this->model} {$this->year }";
     }
 }

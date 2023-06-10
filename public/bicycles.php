@@ -23,9 +23,8 @@
         <th>Category</th>
         <th>Gender</th>
         <th>Color</th>
-        <th>Weight</th>
-        <th>Condition</th>
         <th>Price</th>
+        <th>&nbsp;</th>
       </tr>
 
       <?php
@@ -47,6 +46,7 @@
           <td><?php echo h($bike->getWeight_kg()) . '/' . h($bike->getWeight_lbs()); ?></td>
           <td><?php echo h($bike->condition()); ?></td>
           <td><?php echo h($bike->price_format()); ?></td>
+          <td><a href="detail.php?id=<?php echo $bike->id?>">View</a></td>
         </tr>
 
       <?php } ?>
