@@ -22,7 +22,6 @@ function db_disconnect($connection)
 {
     if(isset($connection))
     {
-        echo "database connection off";
         $connection->close();
     }
 }

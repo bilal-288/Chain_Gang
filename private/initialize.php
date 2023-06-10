@@ -29,7 +29,6 @@
   // Load class definitions manually
 
   // -> Individually
- //require_once('classes/bicycle.class.php');
  //require_once('classes/ParseCSV.class.php');
 
   // -> All classes in directory
