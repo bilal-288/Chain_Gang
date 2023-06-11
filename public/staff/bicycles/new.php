@@ -3,11 +3,23 @@
 require_once('../../../private/initialize.php');
 
 if(is_post_request()) {
+  echo "dgdg";
 
   // Create record using post parameters
-  $args = $_POST['bicycle'];
-  $bicycle = new Bicycle($args);
-  $result = $bicycle->save();
+ 
+  $args['brand'] = $_POST['brand'] ?? NULL;
+  $args['model'] = $_POST['model'] ?? NULL;
+  $args['year'] = $_POST['year'] ?? NULL;
+  $args['category'] = $_POST['category'] ?? NULL;
+  $args['color'] = $_POST['color'] ?? NULL;
+  $args['gender'] = $_POST['gender'] ?? NULL;
+  $args['price'] = $_POST['price'] ?? NULL;
+  $args['weight_kg'] = $_POST['weight_kg'] ?? NULL;
+  $args['condition_id'] = $_POST['condition_id'] ?? NULL;
+  $args['description'] = $_POST['description'] ?? NULL;
+
+  $bicycle = new bicycle($args);
+  $result = $bicycle->create();
 
   if($result === true) {
     $new_id = $bicycle->id;
@@ -18,6 +30,7 @@ if(is_post_request()) {
   }
 
 } else {
+ 
   // display the form
   $bicycle = new Bicycle([]);
 }

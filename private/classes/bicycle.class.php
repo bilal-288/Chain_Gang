@@ -4,6 +4,8 @@ class bicycle
 {
 
     static protected $database;
+    static protected $db_columns = ['id','brand', 'model', 'year', 'category', 'color', 'gender', 'price', 
+                                    'weight_kg', 'condition_id', 'description'];
     static public  function set_database($database)
     {
         self::$database = $database;
@@ -57,6 +59,48 @@ class bicycle
         }
         return $object;
     }
+
+    public function create()
+    {
+        $attributes = $this->sanitized_attributes();
+        $sql = "INSERT INTO bicycles (";
+        $sql .= join(', ', array_keys($attributes));
+        $sql .= ") VALUES ('";
+        $sql .= join("', '", array_values($attributes));
+        $sql .= "')";
+        
+        $result = self::$database->query($sql);
+        if($result)
+        {
+            $this->id = self::$database->insert_id;
+        }
+        return $result;
+
+    }
+
+    public function attributes()
+    {
+        $attributes = [];
+        foreach(self::$db_columns as $column)
+        {
+            if($column == 'id')
+            {
+                continue;
+            }
+            $attributes[$column] = $this->$column;
+        }
+        return $attributes;
+    }
+
+    protected function sanitized_attributes()
+    {
+        $sanitized = [];
+        foreach($this->attributes() as $key => $value)
+        {
+            $sanitized[$key] = self::$database->escape_string($value);
+        }
+        return $sanitized;
+    }
     public $id;
     public $brand;
     public $model;
@@ -66,12 +110,12 @@ class bicycle
     public $description;
     public $gender;
     public $price;
-    protected $weight_kg;
-    protected $condition_id;
+    public $weight_kg;
+    public $condition_id;
 
     public const CATEGORIES = ['Road', 'Mountain', 'Hybrid', 'Cruiser', 'City', 'BMX'];
     public const GENDERS = ['Mens', 'Womens', 'Unisex'];
-    protected const  CONDITION_OPTIONS = [
+    public const  CONDITION_OPTIONS = [
         1 => 'Beat up',
         2 => 'Decent',
         3 => 'Good',
@@ -82,6 +126,7 @@ class bicycle
 
     public function __construct($args)
     {
+        
 
         $this->brand = $args['brand'] ?? '';
         $this->model = $args['model'] ?? '';
