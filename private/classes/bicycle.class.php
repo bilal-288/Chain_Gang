@@ -4,8 +4,10 @@ class bicycle
 {
 
     static protected $database;
-    static protected $db_columns = ['id','brand', 'model', 'year', 'category', 'color', 'gender', 'price', 
-                                    'weight_kg', 'condition_id', 'description'];
+    static protected $db_columns = [
+        'id', 'brand', 'model', 'year', 'category', 'color', 'gender', 'price',
+        'weight_kg', 'condition_id', 'description'
+    ];
     static public  function set_database($database)
     {
         self::$database = $database;
@@ -28,7 +30,7 @@ class bicycle
         return $object_array;
     }
 
-    
+
     static public function find_all()
     {
         $sql = "select * from bicycles";
@@ -37,13 +39,12 @@ class bicycle
 
     static public function find_by_id($id)
     {
-        $sql= "select * from bicycles";
+        $sql = "select * from bicycles";
         $sql .= " where id='" . self::$database->escape_string($id) . "'";
         $obj_array = self::find_by_sql($sql);
-        if(!empty($obj_array))
-        {
+        if (!empty($obj_array)) {
             return array_shift($obj_array);
-        }else{
+        } else {
             return false;
         }
     }
@@ -68,37 +69,47 @@ class bicycle
         $sql .= ") VALUES ('";
         $sql .= join("', '", array_values($attributes));
         $sql .= "')";
-        
+
         $result = self::$database->query($sql);
-        if($result)
-        {
+        if ($result) {
             $this->id = self::$database->insert_id;
         }
         return $result;
-
     }
 
     public function update()
     {
         $attributes = $this->sanitized_attributes();
         $attribute_pairs = [];
-        foreach($attributes as $key => $value)
-        {
+        foreach ($attributes as $key => $value) {
             $attribute_pairs[] = "{$key}='{$value}'";
         }
-  
-        $sql = "update bicycle set ";
+
+    
+        $sql = "update bicycles set ";
         $sql .= join(', ', $attribute_pairs);
-        $sql .= " where id='". self::$database->escape_string($this->id) . "' ";
+        $sql .= " WHERE id='" . $this->id . "' ";
         $sql .= "limit 1";
+
+        $result = self::$database->query($sql);
+
+    // Check if the query was executed successfully
+    if ($result) {
+        echo "updated";
+        redirect_to(url_for('/staff/bicycles/show.php?id=' . $this->id));
+        // Handle success case
+        // ...
+    } else {
+        echo "not updated";
+        // Handle failure case
+        // ...
+    }
     }
 
-    public function merge_attributes($args=[])
+    public function merge_attributes($args = [])
     {
-        foreach($args as $key =>$value)
-        {
-            if(property_exists($this, $key) && !is_null($value))
-            {
+        foreach ($args as $key => $value) {
+            if (property_exists($this, $key) && !is_null($value)) {
                 $this->$key = $value;
             }
         }
@@ -107,10 +118,8 @@ class bicycle
     public function attributes()
     {
         $attributes = [];
-        foreach(self::$db_columns as $column)
-        {
-            if($column == 'id')
-            {
+        foreach (self::$db_columns as $column) {
+            if ($column == 'id') {
                 continue;
             }
             $attributes[$column] = $this->$column;
@@ -121,8 +130,7 @@ class bicycle
     protected function sanitized_attributes()
     {
         $sanitized = [];
-        foreach($this->attributes() as $key => $value)
-        {
+        foreach ($this->attributes() as $key => $value) {
             $sanitized[$key] = self::$database->escape_string($value);
         }
         return $sanitized;
@@ -152,7 +160,7 @@ class bicycle
 
     public function __construct($args)
     {
-        
+
 
         $this->brand = $args['brand'] ?? '';
         $this->model = $args['model'] ?? '';
@@ -245,6 +253,6 @@ class bicycle
 
     public function name()
     {
-        return "{$this->brand} {$this->model} {$this->year }";
+        return "{$this->brand} {$this->model} {$this->year}";
     }
 }

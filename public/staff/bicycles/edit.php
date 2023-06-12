@@ -31,18 +31,18 @@ if (is_post_request()) {
   $args['description'] = $_POST['description'] ?? NULL;
 
   $bicycle->merge_attributes($args);
-  $result= $bicycle->update();
-
   $result = false;
+  $result= $bicycle->update();
 
   if ($result === true) {
     $_SESSION['message'] = 'The bicycle was updated successfully.';
     redirect_to(url_for('/staff/bicycles/show.php?id=' . $id));
   } else {
+  
     // show errors
   }
 } else {
-  echo "error1111";
+ 
 
   // display the form
 
@@ -61,7 +61,7 @@ if (is_post_request()) {
     <h1>Edit Bicycle</h1>
 
 
-    <form action="<?php echo url_for('/staff/bicycles/edit.php?id=' . h(u($id))); ?>" method="post">
+    <form action="<?php echo url_for('/staff/bicycles/edit.php?id=' .$id); ?>" method="post">
 
       <?php include('form_fields.php'); ?>
 
