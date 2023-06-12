@@ -26,7 +26,8 @@ if (!isset($bicycle)) {
       <?php for ($year = $this_year - 20; $year <= $this_year; $year++) { ?>
         <option value="<?php echo $year; ?>" <?php if ($bicycle->year == $year) {
                                                 echo 'selected';
-                                              } ?>><?php echo $year; ?></option>
+                                              } ?>><?php echo $year; ?>
+                                              </option>
       <?php } ?>
     </select>
   </dd>

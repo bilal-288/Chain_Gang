@@ -78,6 +78,32 @@ class bicycle
 
     }
 
+    public function update()
+    {
+        $attributes = $this->sanitized_attributes();
+        $attribute_pairs = [];
+        foreach($attributes as $key => $value)
+        {
+            $attribute_pairs[] = "{$key}='{$value}'";
+        }
+  
+        $sql = "update bicycle set ";
+        $sql .= join(', ', $attribute_pairs);
+        $sql .= " where id='". self::$database->escape_string($this->id) . "' ";
+        $sql .= "limit 1";
+    }
+
+    public function merge_attributes($args=[])
+    {
+        foreach($args as $key =>$value)
+        {
+            if(property_exists($this, $key) && !is_null($value))
+            {
+                $this->$key = $value;
+            }
+        }
+    }
+
     public function attributes()
     {
         $attributes = [];
